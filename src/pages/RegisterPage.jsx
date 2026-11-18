@@ -5,6 +5,7 @@ import {
   CheckCircle, Printer, ShieldCheck, Package,
   Star, Truck
 } from 'lucide-react'
+import { useUser } from '../context/UserContext'
 
 function PasswordStrengthBar({ password }) {
   const checks = {
@@ -52,6 +53,7 @@ function PasswordStrengthBar({ password }) {
 
 export default function RegisterPage() {
   const navigate = useNavigate()
+  const { saveAccount } = useUser()
   const [accountType, setAccountType] = useState('creative')
   const [form, setForm] = useState({
     fullName: '',
@@ -59,12 +61,20 @@ export default function RegisterPage() {
     email: '',
     password: '',
     confirmPassword: '',
+    cep: '',
+    street: '',
+    number: '',
+    complement: '',
+    neighborhood: '',
+    city: '',
+    state: '',
     agreeTerms: false,
     swatch: false,
   })
   const [showPass, setShowPass] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -73,11 +83,35 @@ export default function RegisterPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setError('')
+    if (form.password !== form.confirmPassword) {
+      setError('As senhas não coincidem.')
+      return
+    }
+    if (!form.cep || !form.street || !form.number || !form.neighborhood || !form.city || !form.state) {
+      setError('Preencha todos os campos obrigatórios de endereço.')
+      return
+    }
     setLoading(true)
     setTimeout(() => {
+      saveAccount({
+        name: form.fullName,
+        email: form.email,
+        company: form.company,
+        password: form.password,
+        address: {
+          cep: form.cep,
+          street: form.street,
+          number: form.number,
+          complement: form.complement,
+          neighborhood: form.neighborhood,
+          city: form.city,
+          state: form.state,
+        },
+      })
       setLoading(false)
-      navigate('/')
-    }, 1400)
+      navigate('/perfil')
+    }, 600)
   }
 
   return (
@@ -222,6 +256,12 @@ export default function RegisterPage() {
               <div className="flex-1 h-px bg-gray-200" />
             </div>
 
+            {error && (
+              <p className="mb-4 text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                {error}
+              </p>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Name + Company */}
               <div className="grid grid-cols-2 gap-3">
@@ -296,6 +336,43 @@ export default function RegisterPage() {
                   <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                     {showConfirm ? <EyeOff size={13} /> : <Eye size={13} />}
                   </button>
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="border-t border-gray-100 pt-4">
+                <p className="text-xs font-bold text-navy mb-3">
+                  Endereço de entrega <span className="text-red-500">*</span>
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] font-semibold text-navy mb-1">CEP *</label>
+                    <input name="cep" value={form.cep} onChange={handleChange} required placeholder="01310-100" className="input-field text-xs" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-navy mb-1">Número *</label>
+                    <input name="number" value={form.number} onChange={handleChange} required placeholder="100" className="input-field text-xs" />
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-[10px] font-semibold text-navy mb-1">Rua / Avenida *</label>
+                    <input name="street" value={form.street} onChange={handleChange} required placeholder="Av. Paulista" className="input-field text-xs" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-navy mb-1">Bairro *</label>
+                    <input name="neighborhood" value={form.neighborhood} onChange={handleChange} required placeholder="Bela Vista" className="input-field text-xs" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-navy mb-1">Complemento</label>
+                    <input name="complement" value={form.complement} onChange={handleChange} placeholder="Apto 12" className="input-field text-xs" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-navy mb-1">Cidade *</label>
+                    <input name="city" value={form.city} onChange={handleChange} required placeholder="São Paulo" className="input-field text-xs" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-navy mb-1">Estado *</label>
+                    <input name="state" value={form.state} onChange={handleChange} required placeholder="SP" maxLength={2} className="input-field text-xs uppercase" />
+                  </div>
                 </div>
               </div>
 

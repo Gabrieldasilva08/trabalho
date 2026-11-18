@@ -49,45 +49,43 @@ function Stars({ count }) {
 
 export default function Testimonials() {
   return (
-    <section className="py-10 px-4 sm:px-6 lg:px-8 bg-surface">
+    <section className="py-10 px-4 sm:px-6 lg:px-8 bg-surface dark:bg-gray-950">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
           <div>
             <span className="text-xs font-bold text-primary uppercase tracking-widest">
               DEPOIMENTOS VERIFICADOS
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-navy mt-1">
+            <h2 className="text-2xl sm:text-3xl font-black text-navy dark:text-white mt-1">
               Loved by Agencies & Makers Nationwide
             </h2>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <Stars count={5} />
-            <span className="text-sm font-bold text-navy">4.9 / 5</span>
+            <span className="text-sm font-bold text-navy dark:text-white">4.9 / 5</span>
             <span className="text-xs text-gray-400">(18.420 avaliações de clientes)</span>
           </div>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {testimonials.map((t) => (
-            <div key={t.id} className="card p-5 flex flex-col gap-3">
+            <div key={t.id} className="card p-5 flex flex-col gap-3 dark:bg-gray-900 dark:border-gray-800">
               <div className="flex items-center justify-between">
                 <Stars count={t.stars} />
-                <span className="badge bg-green-100 text-green-700 text-[10px]">
+                <span className="badge bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 text-[10px]">
                   <CheckCircle size={9} />
                   Cliente Verificado
                 </span>
               </div>
-              <p className="text-xs text-gray-600 leading-relaxed italic flex-1">
+              <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed italic flex-1">
                 {t.text}
               </p>
-              <div className="flex items-center gap-2.5 pt-2 border-t border-gray-100">
+              <div className="flex items-center gap-2.5 pt-2 border-t border-gray-100 dark:border-gray-800">
                 <div className={`w-8 h-8 rounded-full ${t.avatarColor} text-white text-xs font-bold flex items-center justify-center shrink-0`}>
                   {t.avatar}
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-navy">{t.name}</p>
+                  <p className="text-xs font-bold text-navy dark:text-white">{t.name}</p>
                   <p className="text-[10px] text-gray-400">{t.role} · {t.company}</p>
                 </div>
               </div>

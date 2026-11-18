@@ -1,23 +1,32 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff, Printer, ShieldCheck, Award } from 'lucide-react'
+import { useUser } from '../context/UserContext'
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const { login } = useUser()
   const [form, setForm] = useState({ email: '', password: '' })
   const [showPass, setShowPass] = useState(false)
   const [remember, setRemember] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setError('')
     setLoading(true)
     setTimeout(() => {
+      const result = login({ email: form.email, password: form.password })
       setLoading(false)
-      navigate('/')
-    }, 1200)
+      if (!result.ok) {
+        setError(result.error || 'Não foi possível entrar.')
+        return
+      }
+      navigate('/perfil')
+    }, 500)
   }
 
   return (
@@ -73,6 +82,12 @@ export default function LoginPage() {
             <span className="text-[10px] font-semibold text-gray-400 tracking-widest uppercase">Or sign in with email</span>
             <div className="flex-1 h-px bg-gray-200" />
           </div>
+
+          {error && (
+            <p className="mb-4 text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+              {error}
+            </p>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -157,9 +172,9 @@ export default function LoginPage() {
                 Create an account / Register ↗
               </Link>
             </p>
-            <button className="text-xs text-gray-400 hover:text-primary transition-colors flex items-center gap-1">
-              🔍 Explore Catalog without signing in
-            </button>
+            <Link to="/produtos" className="text-xs text-gray-400 hover:text-primary transition-colors">
+              Explorar catálogo sem entrar
+            </Link>
           </div>
         </div>
 

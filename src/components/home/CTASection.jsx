@@ -17,7 +17,7 @@ export default function CTASection() {
         </div>
         <div className="flex flex-col sm:flex-row gap-3 shrink-0">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/produtos')}
             className="flex items-center gap-2 px-5 py-3 border-2 border-white/40 text-white rounded-lg font-semibold text-sm hover:bg-white/10 transition-colors"
           >
             <Grid3X3 size={16} />

@@ -7,8 +7,8 @@ import CTASection from '../components/home/CTASection'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-surface">
-      <Navbar cartCount={3} variant="full" />
+    <div className="min-h-screen flex flex-col bg-surface dark:bg-gray-950">
+      <Navbar />
       <main className="flex-1">
         <HeroBanner />
         <FeaturedProducts />
